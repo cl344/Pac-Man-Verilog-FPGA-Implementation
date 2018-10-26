@@ -1,0 +1,22 @@
+module pac_fig(pos1, pos2, pic1, pic2, is_pac);
+
+output is_pac;
+
+input[31:0] pos1,pos,pic1,pic2;
+
+wire nocolor1, nocolor2, color;
+
+assign nocolor1 = (pic1 > pos1) & (pic2 > pos2) & (pic1 > pic2);
+assign nocolor2 = (pic1 > pos1) & (pic2 < pos2) & ( pic1>(32'd-1 * pic2));
+
+
+wire[31:0] x_diff, y_diff;
+assign x_diff = pic1-pos1;
+assogm y_diff = pic2-pos2;
+
+assign color = (x_diff > 32'd-100) & (x_diff < 32'd100) & (y_diff > 32'd-100) & (y_diff < 32'd100);
+
+assign is_pac = color & (~ nocolor1) & (~ nocolor2);
+
+
+endmodule
